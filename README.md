@@ -1,72 +1,60 @@
 
-# 🤖 ELORA AI Assistant v3
+# 🧠 Elora AI Assistant
 
-A multi-modal AI assistant combining text generation, image generation, and OCR with a sleek GPT-style interface. Fully optimized for Colab.
-
----
-
-## 🧠 Models Used
-
-### 1. 🗣️ Chatbot: **DistilGPT2**
-- **Purpose**: Conversational AI / Text Generation  
-- **Architecture**: Distilled GPT-2 (6-layer transformer, 82M parameters)  
-- **Benefits**:
-  - 97% of GPT-2’s performance
-  - 40% smaller and faster  
-- **Implementation**:
-  - Tokenizer and causal language modeling via `transformers` (Hugging Face)
+**Elora AI** is a multi-modal, intelligent assistant that merges the power of conversational AI, image generation, and OCR technology. Built to be fast, functional, and creator-customizable, Elora is your complete personal assistant — right in your browser.
 
 ---
 
-### 2. 🎨 Image Generation: **Stable Diffusion v1-4**
-- **Purpose**: Text-to-image synthesis  
-- **Model**: Latent Diffusion Model (~890M params)  
-- **Features**:
-  - 512x512 output
-  - CLIP guidance for quality
-  - FP16 inference (faster, GPU-optimized)  
-- **Library**: `diffusers`
+## 🚀 Features
+
+- 🗣️ **Conversational AI** with DistilGPT2  
+- 🎨 **Text-to-Image Generation** using Stable Diffusion v1-4  
+- 👁️ **OCR** (Image-to-Text) with Tesseract  
+- 🔊 **Text-to-Speech** using gTTS (future-ready)  
+- 🌐 **Interactive Web UI** via Gradio  
+- 🛡️ **Creator Authentication** and custom rule engine  
+- 📁 **Document and Image Upload Support**  
+- 💬 **Real-Time Interaction** with flexible natural language commands  
 
 ---
 
-### 3. 👁️ OCR Engine: **Tesseract via pytesseract**
-- **Purpose**: Extract text from images  
-- **Features**:
-  - Multi-language support
-  - Handles real-world image input  
-- **Library**: `pytesseract`
+## ⚙️ Models Used
+
+| Module           | Model                     | Purpose                       |
+|------------------|---------------------------|-------------------------------|
+| Chatbot          | `DistilGPT2`              | Conversational AI             |
+| Image Generation | `Stable Diffusion v1-4`   | Text-to-Image Synthesis       |
+| OCR              | `Tesseract` (via `pytesseract`) | Image Text Extraction    |
+| TTS (Optional)   | `gTTS`                    | Voice Output (Text-to-Speech) |
 
 ---
 
-### 4. 🔊 Text-to-Speech: **gTTS**
-- Integrated for voice replies (planned for full deployment)
+## 🌐 Interface Modes
+
+- **Chat Mode** – Talk with Elora in natural language  
+- **Generate Mode** – Create artwork from text prompts  
+- **Read Mode** – Extract text from uploaded images  
 
 ---
 
-### 5. 🖼️ UI/UX Layer: **Gradio**
-- Clean GPT-style web UI
-- Mode selector (Chat / Generate / OCR)
-
----
-
-## 🔁 Workflow Overview
+## 🌟 Workflow Overview
 
 ```mermaid
 graph TD
-    A[🎪 User Interface] --> B{🔀 Choose Mode}
+    A[User Interface] --> B{Choose Mode}
     
-    B --> |🗣️ Chat Mode| C[🧠 DistilGPT2]
-    B --> |🎨 Generate Mode| D[🖌️ Stable Diffusion v1-4]
-    B --> |👁️ Read Mode| E[📸 Tesseract OCR]
+    B --> |Chat Mode| C[DistilGPT2]
+    B --> |Generate Mode| D[Stable Diffusion v1-4]
+    B --> |Read Mode| E[Tesseract OCR]
     
-    C --> F[💬 Response Generated]
-    D --> G[🌌 Image Created]
-    E --> H[📜 Text Extracted]
+    C --> F[Response Generated]
+    D --> G[Image Created]
+    E --> H[Text Extracted]
     
-    F --> I[🎉 Display Answer]
-    G --> J[🖼️ Show Artwork]
-    H --> K[🔍 Reveal Text]
-    
+    F --> I[Display Answer]
+    G --> J[Show Artwork]
+    H --> K[Reveal Text]
+
     style A fill:#FF6B6B,stroke:#333
     style B fill:#4ECDC4,stroke:#333
     style C fill:#45B7D1,stroke:#333
@@ -78,4 +66,3 @@ graph TD
     style I fill:#FF9999,stroke:#FF4500
     style J fill:#FF9999,stroke:#FF4500
     style K fill:#FF9999,stroke:#FF4500
-
