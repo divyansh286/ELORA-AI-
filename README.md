@@ -1,5 +1,5 @@
 
-# 🧠 Elora AI Assistant
+# 🧠 Elora AI Chatbot
 
 **Elora AI** is a multi-modal, intelligent assistant that merges the power of conversational AI, image generation, and OCR technology. Built to be fast, functional, and creator-customizable, Elora is your complete personal assistant — right in your browser.
 
