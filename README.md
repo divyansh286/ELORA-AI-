@@ -3,6 +3,21 @@
 
 **Elora AI** is a multi-modal, intelligent assistant that merges the power of conversational AI, image generation, and OCR technology. Built to be fast, functional, and creator-customizable, Elora is your complete personal assistant — right in your browser.
 
+# 🧠 Elora AI — Multimodal Assistant
+
+Elora is a multimodal GenAI-powered assistant that combines:
+- 🤖 **LLM chatbot** (DistilGPT2)
+- 🎨 **Image generation** (Stable Diffusion v1-4)
+- 📖 **OCR text extraction** (Tesseract)
+- 🎤 **Speech synthesis** (gTTS)
+
+## 🚀 Run with FastAPI
+
+## bash
+pip install -r requirements.txt
+uvicorn api:app --reload --port 8000
+
+
 ---
 
 ## 🚀 Features
@@ -41,7 +56,7 @@
 
 ```mermaid
 graph TD
-    A[User Interface] --> B{Choose Mode}
+    A[fast_api_User Interface] --> B{Choose Mode}
     
     B --> |Chat Mode| C[DistilGPT2]
     B --> |Generate Mode| D[Stable Diffusion v1-4]
