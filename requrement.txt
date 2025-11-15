@@ -1,10 +1,15 @@
 fastapi
 uvicorn[standard]
 transformers
-torch
 diffusers
 accelerate
 pillow
 pytesseract
 gtts
 gradio
+opencv-python-headless
+sentence-transformers
+faiss-cpu
+pdfplumber
+langdetect
+pydantic
