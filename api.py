@@ -1,44 +1,93 @@
-from fastapi import FastAPI, UploadFile, File
-from pydantic import BaseModel
-from elora.services import chat_with_elora, generate_image_from_prompt, ocr_from_image_bytes
+from fastapi import FastAPI, UploadFile, File, HTTPException
+from pydantic import BaseModel, Field
+from typing import List, Tuple, Optional
 
-app = FastAPI(title="Elora AI API", version="1.0")
+from elora.services import (
+    chat_with_elora,
+    generate_image_from_prompt,
+    ocr_from_image_bytes,
+)
 
-# Request model for chat
+app = FastAPI(
+    title="Elora AI API",
+    version="1.1",
+    description="Multimodal RAG + Chat + OCR + ImageGen API for Elora"
+)
+
+# ---------------------------
+# REQUEST MODELS
+# ---------------------------
+
 class ChatRequest(BaseModel):
-    prompt: str
-    history: list = []
+    prompt: str = Field(..., description="User message")
+    history: Optional[List[Tuple[str, str]]] = Field(
+        default_factory=list,
+        description="List of (user, assistant) message pairs"
+    )
+
+
+class ImgRequest(BaseModel):
+    prompt: str = Field(..., description="Image generation prompt")
+    style: str = "realistic"
+    negative: str = ""
+    steps: int = 40
+    scale: float = 7.0
+    size: int = 512
+
+
+# ---------------------------
+# API ENDPOINTS
+# ---------------------------
 
 @app.post("/chat")
-def chat(req: ChatRequest):
+async def chat(req: ChatRequest):
     """
-    Chat endpoint - send a prompt + optional history, get AI reply.
+    Chat endpoint for Elora.
+    Takes a prompt + conversation history and returns a reply.
     """
-    return {"reply": chat_with_elora(req.prompt, req.history)}
+    try:
+        reply = chat_with_elora(req.prompt, req.history)
+        return {"reply": reply}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
-# Request model for image generation
-class ImgRequest(BaseModel):
-    prompt: str
 
 @app.post("/generate-image")
-def generate_image(req: ImgRequest):
+async def generate_image(req: ImgRequest):
     """
-    Image generation endpoint - send a text prompt, get generated image path.
+    Generates an image from a text prompt.
+    Uses default params unless custom ones are provided.
     """
-    path = generate_image_from_prompt(req.prompt)
-    return {"image_path": path}
+    try:
+        path = generate_image_from_prompt(
+            prompt=req.prompt,
+            style=req.style,
+            negative=req.negative,
+            steps=req.steps,
+            scale=req.scale,
+            size=req.size
+        )
+        return {"image_path": path}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.post("/ocr")
-def ocr(file: UploadFile = File(...)):
+async def ocr(file: UploadFile = File(...)):
     """
-    OCR endpoint - upload an image file, get extracted text.
+    Extracts text from an uploaded image using OCR.
     """
-    img_bytes = file.file.read()
-    return {"text": ocr_from_image_bytes(img_bytes)}
+    try:
+        img_bytes = await file.read()
+        text = ocr_from_image_bytes(img_bytes)
+        return {"text": text}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/health")
-def health():
+async def health():
     """
-    Health check endpoint.
+    Health check endpoint for load balancers / monitoring.
     """
-    return {"status": "ok"}
+    return {"status": "ok", "service": "Elora AI", "version": "1.1"}
